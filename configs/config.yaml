@@ -1,0 +1,118 @@
+defaults:
+  - _self_
+
+exp_name: "iarcs_run"
+seed: 42
+save_path: "./checkpoints"
+mixed_precision: "fp16"
+allow_tf32: false
+use_lora: true
+lora_rank: 16
+lora_alpha: 16
+lora_dropout: 0.0
+resume_id: ""
+dev_id: 0
+continue_from_universal: false
+path_to_universal_lora: ""
+
+pipeline:
+  continue_from_stage: 0
+  stage_cnt: 100
+  split_step_left: 14
+  split_step_right: 20
+  save_interval: 2
+  sleep_between_stages: 2
+
+split_step: 14
+split_time: 1
+
+# Reward configuration
+threed_scene_layout: true
+universal_rewards: true
+universal_reward_components: [penetration, boundary]
+custom_reward: null
+custom_reward_kwargs: null
+verify_module: null
+object_count_mode: "nll"
+
+# Reward reflection (iARCS agentic loop)
+reflection:
+  enabled: false
+  interval: 10
+  task_name: null
+  task_prompt: ""
+  model: "gemini-2.5-flash"
+
+# MiDiffusion pretrained model
+midiffusion:
+  floor_conditions: "./3d_layout_generation/MiDiffusion/room_features.json"
+  floor_polygons_path: "./3d_layout_generation/MiDiffusion/floor_polygons_test.json"
+  floor_geometry_path: "./3d_layout_generation/MiDiffusion/floor_geometry_test.json"
+  config_path: "./3d_layout_generation/MiDiffusion/config.yaml"
+  checkpoint_path: "./3d_layout_generation/MiDiffusion/output/log/pretrained_3d_layout_custom_attn/best_model.pt"
+  room_type: "bedroom"
+  num_classes: 22
+  num_objects: 12
+  scene_dim: 30
+  num_timesteps: 1000
+  beta_start: 0.0001
+  beta_end: 0.02
+
+# Sampling
+sample:
+  num_steps: 20
+  cfg: true
+  guidance_scale: 5.0
+  eta: 1.0
+  batch_size: 16
+  num_batches_per_epoch: 16
+  save_interval: 2
+  no_branching: true
+  no_selection: true
+  normalize_all: false
+
+# Training
+train:
+  batch_size: 16
+  use_8bit_adam: false
+  learning_rate: 3e-4
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_weight_decay: 0.0001
+  adam_epsilon: 1e-8
+  gradient_accumulation_steps: 8
+  max_grad_norm: 1.0
+  num_inner_epochs: 1
+  cfg: true
+  timestep_fraction: 1.0
+  beta1: 1
+  beta2: 1
+  eps: 1e-4
+  num_epochs: 2
+  adv_clip_max: 5
+  save_interval: 2
+  num_checkpoint_limit: 5
+  incremental_training: true
+  only_train_steps: 15
+  uniformly_sample_timesteps: false
+  score_fn_training: false
+
+# Evaluation
+eval:
+  pos_threshold: 0.5
+  neg_threshold: -0.5
+  history_cnt: 8
+
+# Weights & Biases
+wandb:
+  entity: ""
+  project: "iarcs"
+  enabled: true
+  group: null
+
+hydra:
+  run:
+    dir: logs/${exp_name}/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: logs/${exp_name}
+    subdir: ${hydra.job.num}
