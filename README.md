@@ -1,5 +1,12 @@
 # iARCS: Iterative Agentic RL for Controllable 3D Scene Generation
 
+[![arXiv](https://img.shields.io/badge/arXiv-2608.06161-b31b1b.svg)](https://arxiv.org/abs/2608.06161)
+[![Project Page](https://img.shields.io/badge/Project-Page-blue.svg)](https://saugat2002.github.io/iarcs/)
+[![Dataset](https://img.shields.io/badge/%F0%9F%A4%97-Dataset-yellow.svg)](https://huggingface.co/datasets/Saugat20021/iARCS)
+[![HF Paper](https://img.shields.io/badge/%F0%9F%A4%97-Paper-yellow.svg)](https://huggingface.co/papers/2608.06161)
+
+**Controllable 3D indoor scene generation with reinforcement learning:** DDPO fine-tuning of a 3D scene diffusion model (MiDiffusion, 3D-FRONT) with Eureka-style, LLM-written reward programs.
+
 This is the official implementation of [iARCS: Iterative Agentic RL for Controllable 3D Scene Generation](https://arxiv.org/abs/2608.06161).
 
 iARCS fine-tunes pretrained 3D scene layout diffusion models using reinforcement learning with modular reward functions. It features a two-stage strategy: (1) universal-reward pretraining for physical plausibility, and (2) task-specific fine-tuning using LLM-generated reward programs that are iteratively refined from training feedback.
@@ -188,5 +195,16 @@ plot_scenes(layouts, scene_indices, "bedroom_views.png", max_scenes=16)
       archivePrefix={arXiv},
       primaryClass={cs.AI},
       url={https://arxiv.org/abs/2608.06161}, 
+}
+```
+
+## Citation
+
+```bibtex
+@article{adhikari2026iarcs,
+  title   = {iARCS: Iterative Agentic RL for Controllable 3D Scene Generation},
+  author  = {Adhikari, Saugat and Neupane, Ashok Prasad and Paudel, Pramish and Chhatkuli, Ajad and Paudel, Danda Pani},
+  journal = {arXiv preprint arXiv:2608.06161},
+  year    = {2026}
 }
 ```
